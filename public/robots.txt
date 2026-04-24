@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /game/
+Disallow: /profile
+Disallow: /shop
+Disallow: /lobby
+
+Sitemap: https://wordanza.app/sitemap.xml

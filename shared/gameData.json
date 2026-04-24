@@ -1,0 +1,73 @@
+{
+  "_comment": "Source de vérité pour les données de jeu partagées entre client (src/) et Cloud Functions (functions/). Copié automatiquement vers functions/shared/ au déploiement via firebase.json predeploy. NE PAS modifier les mirrors directement, toujours éditer ce fichier.",
+
+  "HANDICAP_TOLERANCE": 100,
+  "MAX_WAIT_MS": 3600000,
+
+  "PEARL_REWARDS": { "1": 10, "2": 6, "3": 4, "4": 2, "5": 1 },
+  "PEARL_PARTICIPATION": 1,
+
+  "HANDICAP_TABLE": {
+    "0": 250, "1": 253, "2": 259, "3": 265, "4": 282, "5": 292,
+    "6": 302, "7": 312, "8": 324, "9": 335, "10": 348, "11": 360,
+    "12": 374, "13": 387, "14": 401, "15": 415, "16": 422, "17": 430,
+    "18": 445, "19": 461, "20": 476, "21": 492, "22": 509, "23": 525,
+    "24": 542, "25": 559, "26": 577, "27": 595, "28": 613, "29": 631,
+    "30": 650
+  },
+
+  "SKILL_IDS": ["speed", "creativity", "wisdom"],
+  "SKILL_MAX": 10,
+
+  "GAME_SLOT_COST": 2000,
+  "MAX_EXTRA_GAME_SLOTS": 19,
+  "BASE_GAME_SLOTS": 1,
+
+  "AP_MAX": 500,
+
+  "POWERUP_COSTS": {
+    "trash":      { "shopCost": 0,    "apCost": 0,  "usesPerGame": -1, "isDefault": true  },
+    "binoculars": { "shopCost": 10,   "apCost": 5,  "usesPerGame": -1, "isDefault": false },
+    "recycle":    { "shopCost": 10,   "apCost": 15, "usesPerGame": -1, "isDefault": false },
+    "vowel":      { "shopCost": 20,   "apCost": 25, "usesPerGame": -1, "isDefault": false },
+    "consonant":  { "shopCost": 20,   "apCost": 25, "usesPerGame": -1, "isDefault": false },
+    "boost":      { "shopCost": 50,   "apCost": 0,  "usesPerGame": 1,  "isDefault": false },
+    "steal":      { "shopCost": 80,   "apCost": 30, "usesPerGame": 3,  "isDefault": false },
+    "twister":    { "shopCost": 200,  "apCost": 0,  "usesPerGame": 1,  "isDefault": false },
+    "switcheroo": { "shopCost": 500,  "apCost": 0,  "usesPerGame": 1,  "isDefault": false },
+    "joker":      { "shopCost": 1000, "apCost": 0,  "usesPerGame": 1,  "isDefault": false },
+    "shield":     { "shopCost": 1000, "apCost": 30, "usesPerGame": 1,  "isDefault": false }
+  },
+  "SHIELDABLE_POWERUPS": ["binoculars", "steal", "switcheroo"],
+  "TARGETED_POWERUPS":   ["binoculars", "steal", "switcheroo"],
+
+  "LETTER_DISTRIBUTIONS": {
+    "en": {
+      "A": 9, "B": 2, "C": 2, "D": 4, "E": 12, "F": 2, "G": 3, "H": 2, "I": 9,
+      "J": 1, "K": 1, "L": 4, "M": 2, "N": 6, "O": 8, "P": 2, "Q": 1, "R": 6,
+      "S": 4, "T": 6, "U": 4, "V": 2, "W": 2, "X": 1, "Y": 2, "Z": 1
+    },
+    "fr": {
+      "A": 9, "B": 2, "C": 2, "D": 3, "E": 15, "F": 2, "G": 2, "H": 2, "I": 8,
+      "J": 1, "K": 1, "L": 5, "M": 3, "N": 6, "O": 6, "P": 2, "Q": 1, "R": 6,
+      "S": 6, "T": 6, "U": 6, "V": 2, "W": 1, "X": 1, "Y": 1, "Z": 1
+    },
+    "es": {
+      "A": 12, "B": 2, "C": 4, "D": 5, "E": 12, "F": 1, "G": 2, "H": 2, "I": 6,
+      "J": 1, "L": 4, "M": 2, "N": 5, "O": 9, "P": 2, "Q": 1, "R": 5,
+      "S": 6, "T": 4, "U": 5, "V": 1, "X": 1, "Y": 1, "Z": 1
+    },
+    "de": {
+      "A": 5, "B": 2, "C": 2, "D": 4, "E": 15, "F": 2, "G": 3, "H": 4, "I": 6,
+      "J": 1, "K": 2, "L": 3, "M": 4, "N": 9, "O": 3, "P": 1, "Q": 1, "R": 6,
+      "S": 7, "T": 6, "U": 6, "V": 1, "W": 1, "X": 1, "Y": 1, "Z": 1, "ß": 1
+    }
+  },
+  "VOWELS": ["A", "E", "I", "O", "U"],
+
+  "BOT_NAMES": [
+    "Panda Bot", "Koala Bot", "Otter Bot", "Tapir Bot", "Lemur Bot",
+    "Capybara Bot", "Axolotl Bot", "Flamingo Bot", "Platypus Bot",
+    "Narwhal Bot", "Pangolin Bot", "Okapi Bot"
+  ]
+}

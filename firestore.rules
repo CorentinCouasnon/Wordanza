@@ -1,0 +1,105 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ── PROFILS JOUEURS ──────────────────────────────────────────────────────
+    // Lecture : tout joueur authentifié peut lire un profil (pour afficher
+    //           les noms et compétences des adversaires).
+    // Écriture : uniquement le propriétaire.
+    //
+    // Note : les champs pearls, stats, skills et unlockedPowerups sont désormais
+    //   écrits par les Cloud Functions via Admin SDK (qui bypass ces règles).
+    //   Le client peut toujours écrire sur son profil pour : pseudo, langue, etc.
+    match /users/{userId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // ── PARTIES ──────────────────────────────────────────────────────────────
+    // Lecture : tout joueur authentifié.
+    //
+    // Création : le créateur doit se déclarer dans playerIds[].
+    //   (Les matchs créés par les Cloud Functions passent via Admin SDK, pas de règle.)
+    //
+    // Mise à jour : deux cas autorisés :
+    //   1. Joueur DÉJÀ participant : peut modifier la partie. La triche reste limitée
+    //      par les transactions serveur (boardVersion) et la Cloud Function validateWord.
+    //   2. Joueur NON participant rejoignant une partie "waiting" : il doit
+    //      s'ajouter à playerIds[] (légitime join flow). Cela empêche qu'un
+    //      utilisateur quelconque écrase arbitrairement une partie en attente.
+    match /games/{gameId} {
+      allow read: if request.auth != null;
+
+      allow create: if request.auth != null
+                    && request.auth.uid in request.resource.data.playerIds;
+
+      allow update: if request.auth != null
+                    && (
+                      // Cas 1 : déjà participant
+                      request.auth.uid in resource.data.playerIds
+                      // Cas 2 : join, partie waiting et on s'ajoute soi-même à playerIds
+                      || (
+                        resource.data.status == 'waiting'
+                        && !(request.auth.uid in resource.data.playerIds)
+                        && request.auth.uid in request.resource.data.playerIds
+                      )
+                    );
+
+      // Chat : tout joueur authentifié peut lire et créer (pas modifier ni supprimer).
+      match /chat/{messageId} {
+        allow read: if request.auth != null;
+        allow create: if request.auth != null
+                      && request.resource.data.userId == request.auth.uid;
+        allow update, delete: if false;
+      }
+    }
+
+    // ── RÉSERVATIONS DE PSEUDO ───────────────────────────────────────────────
+    // Lecture : tout joueur authentifié, sert à résoudre username → uid pour
+    //   afficher les profils publics (/u/:username).
+    // Écriture : uniquement la Cloud Function updateDisplayName (Admin SDK → bypass).
+    match /displayNames/{nameLower} {
+      allow read:  if request.auth != null;
+      allow write: if false;
+    }
+
+    // ── DÉFI QUOTIDIEN ───────────────────────────────────────────────────────
+    // Défi global : lecture seule pour tous (rack, board, bestScore/bestWord).
+    // Écriture uniquement via Cloud Function (generateDailyChallenge, Admin SDK).
+    // Note : bestWord reste lisible avant submit, fuite théorique acceptée
+    //   (choix produit : simplicité vs protection d'un puzzle trivial à contourner).
+    match /dailyChallenges/{challengeId} {
+      allow read:  if request.auth != null;
+      allow write: if false;
+    }
+
+    // Résultats du joueur : lecture/écriture uniquement par le propriétaire.
+    // En pratique, l'écriture passe par la Cloud Function submitDailyChallenge
+    // (Admin SDK bypass). Lecture directe depuis le client pour afficher le résultat.
+    match /users/{userId}/dailyResults/{date} {
+      allow read:  if request.auth != null && request.auth.uid == userId;
+      allow write: if false;
+    }
+
+    // ── BUG REPORTS ──────────────────────────────────────────────────────────
+    // Création par tout utilisateur authentifié, le doc doit porter son uid.
+    // Consultation/gestion uniquement via la console Firebase (Admin SDK).
+    match /bugReports/{reportId} {
+      allow create: if request.auth != null
+                    && request.resource.data.userId == request.auth.uid;
+      allow read, update, delete: if false;
+    }
+
+    // ── MATCHMAKING ──────────────────────────────────────────────────────────
+    // Lecture : tout joueur authentifié (pour afficher la taille de la file).
+    // Création/mise à jour : uniquement son propre document.
+    // Suppression : uniquement son propre document (les autres suppressions
+    //   passent par les Cloud Functions via Admin SDK).
+    match /matchmaking/{userId} {
+      allow read: if request.auth != null;
+      allow create, update: if request.auth != null && request.auth.uid == userId;
+      allow delete: if request.auth != null && request.auth.uid == userId;
+    }
+
+  }
+}

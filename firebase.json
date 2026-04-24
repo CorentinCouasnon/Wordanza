@@ -1,0 +1,37 @@
+{
+  "hosting": {
+    "public": "dist",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  },
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "functions": [
+    {
+      "source": "functions",
+      "codebase": "default",
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log",
+        "*.local"
+      ],
+      "predeploy": [
+        "node -e \"const fs=require('fs'); fs.cpSync('./public/dictionaries', './functions/dictionaries', {recursive:true, force:true}); console.log('Dictionaries copied to functions/')\"",
+        "node -e \"const fs=require('fs'); fs.mkdirSync('./functions/shared', {recursive:true}); fs.copyFileSync('./shared/gameData.json', './functions/shared/gameData.json'); console.log('Shared data copied to functions/')\""
+      ]
+    }
+  ]
+}

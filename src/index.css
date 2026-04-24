@@ -1,0 +1,120 @@
+@import "tailwindcss";
+
+@theme {
+  /* ── Soleil d'été : gamme slate → crème chaud ────────────────────────────
+     Dans le code existant, les hauts numéros (800, 700) sont des fonds de
+     panneaux et les bas numéros (300, 400) des couleurs de texte.
+     On inverse la luminosité pour passer du thème sombre au thème clair
+     chaleureux — sans toucher aux composants JSX. */
+
+  --color-slate-950: oklch(85%  0.030 75);  /* panneau encore plus profond */
+  --color-slate-900: oklch(88%  0.025 77);  /* panneau en creux (cards sur panel) */
+  --color-slate-800: oklch(93%  0.022 80);  /* fond panneau  → crème chaud   */
+  --color-slate-700: oklch(88%  0.032 77);  /* fond secondaire → beige clair */
+  --color-slate-600: oklch(80%  0.055 72);  /* bordures       → doré pâle    */
+  --color-slate-500: oklch(62%  0.075 60);  /* texte atténué  → brun moyen   */
+  --color-slate-400: oklch(44%  0.080 52);  /* texte secondaire → brun       */
+  --color-slate-300: oklch(29%  0.070 46);  /* texte principal → brun foncé  */
+  --color-slate-200: oklch(20%  0.055 43);
+  --color-slate-100: oklch(14%  0.040 40);
+  --color-slate-50:  oklch(10%  0.030 38);
+
+  /* ── Emerald → Orange (boutons primaires, accents, tuile centre) ─────── */
+  --color-emerald-50:  oklch(97%  0.015 70);
+  --color-emerald-100: oklch(93%  0.030 68);
+  --color-emerald-200: oklch(87%  0.060 65);
+  --color-emerald-300: oklch(80%  0.100 60);
+  --color-emerald-400: oklch(74%  0.180 56);  /* accent   → ambre-or         */
+  --color-emerald-500: oklch(65%  0.210 52);  /* orange vif                  */
+  --color-emerald-600: oklch(57%  0.230 48);  /* bouton primaire → orange    */
+  --color-emerald-700: oklch(47%  0.200 45);
+  --color-emerald-800: oklch(37%  0.150 43);
+  --color-emerald-900: oklch(28%  0.100 42);  /* case centre plateau          */
+  --color-emerald-950: oklch(20%  0.070 40);
+
+  /* ── Blue → Orange-ambre (tuiles draft, sélection, progress bars) ────── */
+  --color-blue-50:  oklch(97%  0.012 72);
+  --color-blue-100: oklch(94%  0.060 72);
+  --color-blue-200: oklch(87%  0.100 68);
+  --color-blue-300: oklch(80%  0.150 63);
+  --color-blue-400: oklch(72%  0.190 58);
+  --color-blue-500: oklch(63%  0.220 53);
+  --color-blue-600: oklch(54%  0.210 49);
+  --color-blue-700: oklch(44%  0.180 46);
+  --color-blue-800: oklch(34%  0.140 43);
+  --color-blue-900: oklch(25%  0.100 41);
+}
+
+/* ── Fond global ─────────────────────────────────────────────────────────── */
+body {
+  margin: 0;
+  font-family: system-ui, 'Segoe UI', Roboto, sans-serif;
+  background-color: #fdf6e8;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E"),
+    radial-gradient(ellipse at 50% 40%, #fff8ec 0%, #fdf6e8 55%, #f8edd4 100%);
+  background-size: 200px 200px, cover;
+  background-attachment: fixed;
+  color: oklch(29% 0.07 46);
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/* ── Landing page avec quadrillage ──────────────────────────────────────── */
+.with-grid {
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E"),
+    linear-gradient(rgba(180, 120, 30, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(180, 120, 30, 0.06) 1px, transparent 1px),
+    radial-gradient(ellipse at 50% 40%, #fff8ec 0%, #fdf6e8 55%, #f8edd4 100%);
+  background-size: 200px 200px, 40px 40px, 40px 40px, cover;
+  background-attachment: fixed;
+}
+
+/* ── Animations ──────────────────────────────────────────────────────────── */
+@keyframes slideInDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-message-in { animation: slideInDown 0.2s ease-out forwards; }
+
+@keyframes borderFlash {
+  0%   { background-color: rgba(220, 38, 38, 0.7); }
+  50%  { background-color: rgba(220, 38, 38, 0.9); }
+  100% { background-color: rgba(220, 38, 38, 0.7); }
+}
+.animate-border-flash { animation: borderFlash 0.4s ease-in-out 3; }
+
+/* Shimmer → teintes ambrées */
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+.animate-shimmer {
+  background-image: linear-gradient(
+    90deg,
+    rgba(200, 150, 60, 0.15) 0%,
+    rgba(230, 180, 80, 0.45) 50%,
+    rgba(200, 150, 60, 0.15) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.2s ease-in-out infinite;
+}
+
+/* Pulse bordure → orange (ex tuiles draft en validation) */
+@keyframes pulseBorder {
+  0%, 100% { box-shadow: 0 0 0 2px rgba(220, 130, 30, 0.3); }
+  50%       { box-shadow: 0 0 0 2px rgba(220, 130, 30, 0.9); }
+}
+.animate-pulse-border { animation: pulseBorder 1s ease-in-out infinite; }
+
+@keyframes fadeIn  { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
+.animate-fade-in  { animation: fadeIn  0.25s ease-out forwards; }
+.animate-fade-out { animation: fadeOut 0.25s ease-in  forwards; }
+
+@keyframes spin { to { transform: rotate(360deg); } }
+.animate-spin-slow { animation: spin 0.8s linear infinite; }
