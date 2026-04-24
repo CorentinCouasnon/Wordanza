@@ -46,7 +46,8 @@
       "Bash(node scripts/bench-daily-solver.cjs --dates=2026-04-20,2026-04-21,2026-05-15 de)",
       "Bash(xargs wc *)",
       "Bash(find /c/Dev/Wordanza/src -type f \\\\\\( -name \"*.jsx\" -o -name \"*.js\" \\\\\\) -exec grep -l \"console\\\\.\" {} \\\\;)",
-      "Bash(node -e \"const c = require\\('./functions/constants.js'\\); console.log\\('POWERUPS keys:', Object.keys\\(c.POWERUPS\\).length\\); console.log\\('trash:', c.POWERUPS.trash\\); console.log\\('HANDICAP[15]:', c.HANDICAP_TABLE[15]\\); console.log\\('AP_MAX:', c.AP_MAX\\); console.log\\('VOWELS has A:', c.VOWELS.has\\('A'\\)\\); console.log\\('drawLetter en:', c.drawRandomLetter\\('en'\\)\\);\")"
+      "Bash(node -e \"const c = require\\('./functions/constants.js'\\); console.log\\('POWERUPS keys:', Object.keys\\(c.POWERUPS\\).length\\); console.log\\('trash:', c.POWERUPS.trash\\); console.log\\('HANDICAP[15]:', c.HANDICAP_TABLE[15]\\); console.log\\('AP_MAX:', c.AP_MAX\\); console.log\\('VOWELS has A:', c.VOWELS.has\\('A'\\)\\); console.log\\('drawLetter en:', c.drawRandomLetter\\('en'\\)\\);\")",
+      "Bash(node scripts/predeploy-functions.js)"
     ]
   }
 }
