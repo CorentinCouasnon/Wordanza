@@ -80,12 +80,12 @@ function drawBalancedRack(rng, language, size) {
 /**
  * Génère un board pré-rempli + réglette pour le défi quotidien.
  *
- * @param {string}       date     - "YYYY-MM-DD"
- * @param {string}       language - "en" | "fr"
- * @param {Set<string>}  dict
+ * @param {string} date     - "YYYY-MM-DD"
+ * @param {string} language - "en" | "fr"
+ * @param {{ set: Set<string>, byLength: Array<string[]> }} dictIndex
  * @returns {{ board, rack, rackSize, preplacedLetters }}
  */
-function generateChallenge(date, language, dict) {
+function generateChallenge(date, language, dictIndex) {
   const seed = hashString(`${date}_${language}`)
   const rng  = mulberry32(seed)
 
@@ -94,6 +94,7 @@ function generateChallenge(date, language, dict) {
   // Taille de la réglette finale (min 6, max 9 selon spec utilisateur)
   const rackSize = randInt(rng, 6, 9)
 
+  const dict = dictIndex?.set ?? null
   const isValidWord = (w) => dict ? dict.has(w.toUpperCase()) : true
 
   let board = {}
@@ -104,7 +105,7 @@ function generateChallenge(date, language, dict) {
     attempts++
     // Réglette de bot : taille fixe 7 pour la simulation
     const botHand = drawBalancedRack(rng, language, 7)
-    const result  = findBotMove(botHand, board, isValidWord)
+    const result  = findBotMove(botHand, board, dictIndex)
     if (!result) continue
 
     // Vérifier que tous les cross-words sont valides

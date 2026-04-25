@@ -125,7 +125,7 @@ exports.generateDailyChallenge = onSchedule(
       }
 
       // 1. Génération board + réglette (déterministe depuis la date)
-      const gen = generateChallenge(today, lang, dictIndex.set)
+      const gen = generateChallenge(today, lang, dictIndex)
       console.log(`[dailyChallenge] ${docId}: ${gen.preplacedLetters} lettres, rack ${gen.rackSize}`)
 
       // 2. Résolution, trouve le meilleur mot possible
