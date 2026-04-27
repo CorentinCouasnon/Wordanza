@@ -4,5 +4,6 @@ Disallow: /game/
 Disallow: /profile
 Disallow: /shop
 Disallow: /lobby
+Disallow: /daily
 
 Sitemap: https://wordanza.app/sitemap.xml
